@@ -82,7 +82,7 @@ def preprocessing_gripper(image_path, show = False):
     """
     binary_image = get_binary_image(image_path )
     cX, cY = find_center(binary_image, show=show)
-    return cX, cY
+    return binary_image, cX, cY
 
 if __name__ == '__main__':
     # Get the directory of the current script
@@ -98,5 +98,5 @@ if __name__ == '__main__':
         # Construct the relative path to the image
         image_path = os.path.join(root_dir, relative_path)
 
-        cX, cY = preprocessing_gripper(image_path, show=True)
+        binary_image, cX, cY = preprocessing_gripper(image_path, show=True)
         print(f"cX: {cX}, cY: {cY}")

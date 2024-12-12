@@ -39,7 +39,7 @@ class TestImageProcessing(unittest.TestCase):
         binary_image = np.zeros((n, n), dtype=np.uint8)
         binary_image[1:2, 1:2] = 255  # Create a white square in the center
 
-        cX, cY = pg.find_center(binary_image)
+        cX, cY  = pg.find_center(binary_image)
         self.assertEqual(int(n/2)-1, cX) # -1 becourse array starts with 0
         self.assertEqual(int(n/2)-1, cY) # -1 becourse array starts with 0
 
