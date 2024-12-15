@@ -1,6 +1,7 @@
 # Custom, data should not be made public!
 data/**
 !data/dummy/** */
+Rohdaten/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
