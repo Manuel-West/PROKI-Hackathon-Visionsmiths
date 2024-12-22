@@ -28,26 +28,27 @@ def process_image(input_image_path, show: bool, otsu_margin=10):
 
 
     #TODO
-    #apply some general smotting of picture to reduce noise
+    # apply some general smotting of picture to reduce noise
+    blurred_image = cv2.GaussianBlur(gray_image, (3, 3), 0)  # Lighter blur: 3x3 kernel
 
-    
+
     # get OTSU thresholds (scalar) for canny
-    otsu_thresh, _ = cv2.threshold(gray_image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    otsu_thresh, _ = cv2.threshold(blurred_image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
     lower = max(0, int(otsu_thresh * (1 - otsu_margin)))
     upper = min(255, int(otsu_thresh * (1 + otsu_margin)))
 
     # Apply Canny edge detection to find edges in the image
-    edges = cv2.Canny(gray_image, lower, upper)
+    edges = cv2.Canny(blurred_image, lower, upper)
     
     #closing the edges
-    kernel = np.ones((3, 3), np.uint8)  # Small kernel to close gaps
+    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (5,5))  # Small kernel to close gaps
     closed_edges = cv2.morphologyEx(edges, cv2.MORPH_CLOSE, kernel)
 
     # Find external contours of the edges
     contours, _ = cv2.findContours(closed_edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     # Create an empty mask with the same size as the grayscale image
-    mask = np.zeros_like(gray_image)
+    mask = np.zeros_like(blurred_image)
 
     # Draw the detected contours on the mask (filled in white)
     _ = cv2.drawContours(mask, contours, -1, (255), thickness=cv2.FILLED)
