@@ -4,17 +4,18 @@ import csv
 import random
 import matplotlib.pyplot as plt
 
-def generate_results(input_csv, output_folder):
+def generate_results(input_csv, output_folder, delimeter= ';'):
     """
     Main function to generate results based on an input semicolon-delimited CSV file.
 
     :param input_csv: Path to the input CSV file containing 'part' and 'gripper' columns.
     :param output_folder: Path to the folder where results (CSV and visualizations) will be saved.
+    :param: delimeter: default delimeter is ' ; ' -> use delimeter= ',' if other  
     """
     try:
-        # Read the input CSV file with semicolon delimiter
+        # Read the input CSV file with (default) semicolon delimiter
         with open(input_csv, 'r') as file:
-            reader = csv.DictReader(file, delimiter=';')  # Specify semicolon delimiter
+            reader = csv.DictReader(file, delimiter= delimeter)  # Specify semicolon delimiter
             rows = list(reader)
 
         # Ensure the output folder exists
@@ -48,7 +49,7 @@ def generate_results(input_csv, output_folder):
         # Write output CSV file with comma delimiter
         output_csv = os.path.join(output_folder, "solutions.csv")
         with open(output_csv, 'w', newline='') as file:
-            writer = csv.DictWriter(file, fieldnames=['part', 'gripper', 'x', 'y', 'angle', 'visualization'])
+            writer = csv.DictWriter(file, fieldnames=['part', 'gripper', 'x', 'y', 'angle'])
             writer.writeheader()
             writer.writerows(output_data)
 
@@ -93,21 +94,12 @@ def create_visualization(part, gripper, x, y, angle, output_path):
 if __name__ == "__main__":
     # Check if the correct number of arguments is provided
     if len(sys.argv) != 3:
-        print("Usage: python solution/main.py path/to/input/tasks.csv path/to/output/folder")
+        print("Usage: python3 solution/csvBuilder.py path/to/input/input.csv path/to/output/folder/")
         sys.exit(1)
         
-'''
-    /Users/jonasludwig/Desktop/Hackathon/PROKI-Hackathon-Visionsmiths/solution/input.csv
-    
-    /Users/jonasludwig/Desktop/Hackathon/PROKI-Hackathon-Visionsmiths/solution/csvBuilder.py
-    
-    /Users/jonasludwig/Desktop/Hackathon/PROKI-Hackathon-Visionsmiths/solution/
+input_csv_path = sys.argv[1] # (path/to/input/input.csv)
 
-'''     
-
-input_csv_path = sys.argv[1] #path to input
-
-output_folder_path = sys.argv[2] #path to output folder 
+output_folder_path = sys.argv[2] # (path/to/output/folder/)
 
     # Run the solution
 generate_results(input_csv_path, output_folder_path)
