@@ -30,7 +30,7 @@ def main():
     args = parser.parse_args()
 
     # read the input csv file
-    input_df = pd.read_csv(args.input)
+    input_df = pd.read_csv(args.input, delimiter=';')
 
     # compute the solution for each row
     results = []
