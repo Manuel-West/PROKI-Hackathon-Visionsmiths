@@ -3,21 +3,27 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 import jaxlie 
+import sys
 
 
-def process_image(input_image_path, show: bool, otsu_margin=10):
+def process_image(input_image_path, output_path, show: bool, inverted_binary: bool, otsu_margin=10):
     """
-    Processes the input image to remove sections identified by edges, 
-    apply Otsu thresholding, and morphological operations to generate a 
-    binary image.
+    Processes an input image to create a binary representation by identifying 
+    and masking sections using Canny edge detection, Otsu thresholding, and 
+    morphological operations.
 
     Parameters:
-    - input_image_path (str): Path to the input image.
-    - output_image_path (str): Path to save the output binary image.
+    - input_image_path (str): Path to the input image file.
+    - output_path (str): Path to save the resulting binary image.
+    - show (bool): Whether to display intermediate processing steps using Matplotlib.
+    - inverted_binary (bool): Whether to generate and return an inverted binary image.
+    - otsu_margin (int): Margin factor for computing thresholds for edge detection.
 
     Returns:
-    - binary_image (np.ndarray): Binary image after processing.
+    - binary_image (np.ndarray): The processed binary image.
+    - binary_inverted (np.ndarray): The inverted binary image, if requested; otherwise `None`.
     """
+    
     # Load the input image
     image = cv2.imread(input_image_path)
     if image is None:
@@ -26,11 +32,8 @@ def process_image(input_image_path, show: bool, otsu_margin=10):
     # Convert the image to grayscale for easier processing
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-
-    #TODO
     # apply some general smotting of picture to reduce noise
     blurred_image = cv2.GaussianBlur(gray_image, (3, 3), 0)  # Lighter blur: 3x3 kernel
-
 
     # get OTSU thresholds (scalar) for canny
     otsu_thresh, _ = cv2.threshold(blurred_image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
@@ -96,27 +99,34 @@ def process_image(input_image_path, show: bool, otsu_margin=10):
         plt.show()
 
     # Save the final binary image
-    #cv2.imwrite(output_image_path, binary_image)
+    cv2.imwrite(output_path, binary_image)
     #print(f"Binary image saved at {output_image_path}")
+    
+    binary_inverted = None
+    
+    if inverted_binary:
+        binary_inverted = cv2.bitwise_not(binary_image)
+        
 
-    return binary_image
-
+    return binary_image, binary_inverted
 
 
 
 
 def find_center(binary_input):
     """
-    Finds the center of mass (CoM) of a binary image.
+    Calculates the center of mass (CoM) for a given binary image.
 
     Parameters:
-    - binary_input (np.ndarray): Binary mask (single-channel, 0 or 255).
+    - binary_input (np.ndarray): Binary mask image (single-channel, 0 or 255).
 
     Returns:
-    - center_x, center_y (int): Coordinates of the center of mass.
-    - center_tuple (tuple): Tuple of (x, y) coordinates.
-    - center_array (np.ndarray): 1x2 array of the center coordinates.
+    - center_x (int): X-coordinate of the center of mass.
+    - center_y (int): Y-coordinate of the center of mass.
+    - center_tuple (tuple): Tuple containing (x, y) coordinates of the center.
+    - center_array (np.ndarray): Array representation of the center coordinates.
     """
+       
     # Calculate moments of the binary image
     moments = cv2.moments(cv2.bitwise_not(binary_input))
 
@@ -159,6 +169,7 @@ def combine(binary, center_tuple: tuple, show: bool):
     Returns:
     - binaryAndCenter_rgb (np.ndarray): The binary image with center marked.
     """
+    
     # Make a copy of the binary image to overlay the center
     binaryAndCenter = binary.copy()
 
@@ -170,9 +181,10 @@ def combine(binary, center_tuple: tuple, show: bool):
 
     # Show the result if required
     if show:
-        plt.imshow("Binary Mask with Green Center", binaryAndCenter_rgb)
-        plt.title('combined mask & center')
-        plt.show()
+            plt.imshow(binaryAndCenter_rgb)  # Pass the image directly
+            plt.title('Binary Mask with Green Center')  # Set the title
+            plt.axis('off')  # Hide the axes
+            plt.show()
 
     # Return the image with the center marked
     return binaryAndCenter_rgb
@@ -180,7 +192,7 @@ def combine(binary, center_tuple: tuple, show: bool):
 
 
 
-
+'''
 def process_directory(directory_path):
     """
     Processes all subfolders in the base folder, creates binary images, finds centers,
@@ -229,31 +241,27 @@ def process_directory(directory_path):
 
     print("All windows are displayed.")
 
+'''
 
 
 
-
-def compute_SE2_transformation(center_x, center_y):
+def compute_SE2_transformation(binary_image):
     """
     Computes the SE(2) transformation to move the origin (0, 0) to the given center.
-    
+
     Parameters:
-    - center_x (float): X-coordinate of the target center.
-    - center_y (float): Y-coordinate of the target center.
-    
+    - binary_image: binary image to calculate the SE2 transformation
+
     Returns:
     - T_obj (jaxlie.SE2): SE(2) transformation object.
-    - T_Matrix: Matrix from trafo. object
+    - T_Matrix: Transformation matrix from the SE(2) object.
     """
 
-    # Get center array from find_center
-    _, _, _, translation = find_center(center_x,center_y)
+    # Get translational center array from find_center
+    _, _, _, translation = find_center(binary_image)
 
     T_obj = jaxlie.SE2.from_translation(translation)
     T_Matrix = T_obj.as_matrix()
-
-    print(T_obj)
-    print(T_Matrix)
 
     return T_obj, T_Matrix
 
@@ -264,7 +272,15 @@ def compute_SE2_transformation(center_x, center_y):
 # Example usage
 if __name__ == "__main__":
 
-    # Define input and output paths for the image   
-    root_dir = '/Users/jonasludwig/Desktop/Hackathon/PROKI-Hackathon-Visionsmiths/Rohdaten/'
+    #usage: python3 processing_canny.py  path/to/picture.png  output/path/to/solution.png 
 
-    process_directory(root_dir)
+    inputPath = sys.argv[1]
+    outputPath = sys.argv[2]
+
+    binary_image, binary_image_invert = process_image(inputPath, outputPath, show= False, inverted_binary= False)
+    _, _, centerTuple, _ = find_center(binary_image)
+    combined_image = combine(binary_image, centerTuple, show= True)
+    
+    _, SE2_Matrix = compute_SE2_transformation(binary_image)
+    print(SE2_Matrix)
+    
