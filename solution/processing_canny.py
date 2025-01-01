@@ -106,9 +106,12 @@ def process_image(input_image_path, output_path, show: bool, inverted_binary: bo
     
     if inverted_binary:
         binary_inverted = cv2.bitwise_not(binary_image)
-        
+    
+    # get dimensions of the binary for postprocessing
+    height, width = binary_image.shape
+    shape = (width, height)
 
-    return binary_image, binary_inverted
+    return binary_image, binary_inverted, shape
 
 
 
@@ -263,7 +266,7 @@ def compute_SE2_transformation(binary_image):
     T_obj = jaxlie.SE2.from_translation(translation)
     T_Matrix = T_obj.as_matrix()
 
-    return T_obj, T_Matrix
+    return T_obj, T_Matrix 
 
 
 
@@ -277,10 +280,13 @@ if __name__ == "__main__":
     inputPath = sys.argv[1]
     outputPath = sys.argv[2]
 
-    binary_image, binary_image_invert = process_image(inputPath, outputPath, show= False, inverted_binary= False)
+    binary_image, binary_image_invert, shape = process_image(inputPath, outputPath, show= False, inverted_binary= False)
+    
     _, _, centerTuple, _ = find_center(binary_image)
     combined_image = combine(binary_image, centerTuple, show= True)
     
     _, SE2_Matrix = compute_SE2_transformation(binary_image)
+    
+    print("Shape of the image (x,y):", shape)
     print(SE2_Matrix)
     
