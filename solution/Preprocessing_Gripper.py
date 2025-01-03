@@ -63,8 +63,61 @@ def find_center(binary_image, show = False):
         cv2.imshow("Image", image)
         print("Press any key to continue...")
         cv2.waitKey(0)
+        width = image.shape[1]
+        height = image.shape[0]
+        print("Width: ", width)
+        print("Height: ", height)
     return cX, cY
+def expand_binary_image(image, target_width, target_height, show = False):
+    """
+        Expands a binary image to the specified dimensions by adding borders.
 
+        This function adds symmetric borders to a binary image such that its
+        new dimensions match the specified target width and height. The borders
+        are filled with a constant value (default is 0). If `show` is enabled,
+        the resized image is displayed in a window, and its dimensions are printed.
+
+        Parameters:
+        -----------
+        image : numpy.ndarray
+            The binary input image to be resized.
+        target_width : int
+            The desired width of the output image.
+        target_height : int
+            The desired height of the output image.
+        show : bool, optional (default=False)
+            If True, displays the resized image in a window and prints its dimensions.
+
+        Returns:
+        --------
+        numpy.ndarray
+            The resized binary image with added borders.
+
+        Notes:
+        ------
+        - Requires OpenCV (cv2) to be installed for the border addition and image display.
+
+        """
+    width = image.shape[1]
+    height = image.shape[0]
+    if width > target_width or height > target_height:
+        resized_image = cv2.resize(image, (target_width, target_height))
+        return resized_image
+    # Resize the image
+    top = int((target_height - height) / 2)
+    bottom = top
+    left = int((target_width * 2 - width) / 2)
+    right = left
+    resized_image = cv2.copyMakeBorder(image, top, bottom, left, right, cv2.BORDER_CONSTANT)
+    if show:
+        width = resized_image.shape[1]
+        height = resized_image.shape[0]
+        print("Width: ", width)
+        print("Height: ", height)
+        cv2.imshow("Resized image", resized_image)
+        print("Press any key to continue...")
+        cv2.waitKey(0)
+    return resized_image
 def preprocessing_gripper(image_path, show = False):
     """
     Preprocess an image to find the center of mass of a gripper.
@@ -82,18 +135,23 @@ def preprocessing_gripper(image_path, show = False):
     """
     binary_image = get_binary_image(image_path )
     cX, cY = find_center(binary_image, show=show)
-    return binary_image, cX, cY
+    resized_binary_image = expand_binary_image(binary_image, binary_image.shape[1], binary_image.shape[0], show = show)
+    return resized_binary_image, cX, cY
 
 if __name__ == '__main__':
     # Get the directory of the current script
     script_dir = os.path.dirname(os.path.abspath(__file__))
     root_dir = Path(script_dir).parent
 
-    relative_paths = ['data/Gripper_test_1.png',
-                      'data/Rohdaten/part_1/1.png', 'data/Rohdaten/part_1/4.png',
-                      'data/Rohdaten/part_4/2.png', 'data/Rohdaten/part_6/5.png',
-                      'data/Rohdaten/part_8/3.png',
+    relative_paths = [
+                       'data/dummy/part_1/gripper_2.png'
                       ]
+    """
+                          'data/Gripper_test_1.png',
+                          'data/Rohdaten/part_1/1.png', 'data/Rohdaten/part_1/4.png',
+                          'data/Rohdaten/part_4/2.png', 'data/Rohdaten/part_6/5.png',
+                          'data/Rohdaten/part_8/3.png',
+                          """
     for relative_path in relative_paths:
         # Construct the relative path to the image
         image_path = os.path.join(root_dir, relative_path)
