@@ -17,9 +17,17 @@ def compute_solution(part_input_path, gripper_input_path, output_path, show=Fals
     gripper_mask, cX, cY = gripper.preprocessing_gripper(gripper_input_path, shape[0], shape[1], show)
     assert part_mask.shape == gripper_mask.shape
     gripper_mask_torch = V(torch.tensor(gripper_mask).double(), True)
-    part_mask_torch = V(torch.tensor(part_mask).double(), True)
-    options={}
-    x, x_hist = opt.optimize_coordinates(template=gripper_mask_torch, reference=part_mask_torch, target_coords=centerTuple, options=options, max_iter=100, tol=1e-10)
+    #part_mask_torch = V(torch.tensor(part_mask).double(), True)
+
+    random_values = torch.rand_like(torch.tensor(part_mask).float()) * 0.8 + 0.2  # Scale to [0.2, 1.0]
+
+    # Only apply random values where part_mask is non-zero
+    new_part_mask = torch.where(torch.tensor(part_mask) > 0, random_values, torch.zeros_like(random_values))
+
+    # Convert to double and make it require gradients
+    part_mask_torch = torch.tensor(new_part_mask, dtype=torch.float64, requires_grad=True)
+
+    x, x_hist = opt.optimize_coordinates(template=gripper_mask_torch, reference=part_mask_torch, target_coords=centerTuple, max_iter=100, tol=1e-1)
     print(x)
     #return solution
 
@@ -87,4 +95,4 @@ def main():
     generate_results(input_csv_path, output_folder_path)
 
 if __name__ == "__main__":
-    compute_solution("../data/dummy/part_1/part_1.png", "../data/dummy/part_1/gripper_2.png","soultion.png")
+    compute_solution("../data/dummy/part_1/part_1.png", "../data/dummy/part_1/gripper_2.png","soultion.png",False)
