@@ -2,7 +2,6 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 import os
-import jaxlie 
 import sys
 
 
@@ -14,7 +13,7 @@ def process_image(input_image_path, output_path, show: bool, inverted_binary: bo
 
     Parameters:
     - input_image_path (str): Path to the input image file.
-    - output_path (str): Path to save the resulting binary image.
+    - output_path (str): Path to save the resulting binary image and its name.
     - show (bool): Whether to display intermediate processing steps using Matplotlib.
     - inverted_binary (bool): Whether to generate and return an inverted binary image.
     - otsu_margin (int): Margin factor for computing thresholds for edge detection.
@@ -194,28 +193,6 @@ def combine(binary, center_tuple: tuple, show: bool):
 
 
 
-def compute_SE2_transformation(binary_image):
-    """
-    Computes the SE(2) transformation to move the origin (0, 0) to the given center.
-
-    Parameters:
-    - binary_image: binary image to calculate the SE2 transformation
-
-    Returns:
-    - T_obj (jaxlie.SE2): SE(2) transformation object.
-    - T_Matrix: Transformation matrix from the SE(2) object.
-    """
-
-    # Get translational center array from find_center
-    _, _, _, translation = find_center(binary_image)
-
-    T_obj = jaxlie.SE2.from_translation(translation)
-    T_Matrix = T_obj.as_matrix()
-
-    return T_obj, T_Matrix 
-
-
-
 
 
 # Example usage
@@ -231,8 +208,5 @@ if __name__ == "__main__":
     _, _, centerTuple, _ = find_center(binary_image)
     combined_image = combine(binary_image, centerTuple, show= True)
     
-    _, SE2_Matrix = compute_SE2_transformation(binary_image)
-    
     print("Shape of the image (x,y):", shape)
-    print(SE2_Matrix)
     

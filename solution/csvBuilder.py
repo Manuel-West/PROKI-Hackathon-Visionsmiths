@@ -3,6 +3,17 @@ import os
 import csv
 import random
 import matplotlib.pyplot as plt
+import Preprocessing_Gripper as gripper
+import processing_canny as part
+import optimization as opt
+
+def compute_solution(inputPath, outputPath):
+    binary_image, binary_image_invert, shape = part.process_image(inputPath, outputPath, show=False, inverted_binary=False)
+    _, _, centerTuple, _ = part.find_center(binary_image)
+    combined_image = part.combine(binary_image, centerTuple, show=True)
+    print("Shape of the image (x,y):", shape)
+
+    #return solution
 
 def generate_results(input_csv, output_folder, delimeter= ';'):
     """
@@ -27,10 +38,7 @@ def generate_results(input_csv, output_folder, delimeter= ';'):
             part = row['part']
             gripper = row['gripper']
 
-            # Generate random values for x, y, and angle
-            x = random.randint(50, 500)
-            y = random.randint(50, 500)
-            angle = random.choice([0, 45, 90, 135, 180])
+
 
             # Add the result to output data
             output_data.append({
@@ -39,7 +47,6 @@ def generate_results(input_csv, output_folder, delimeter= ';'):
                 'x': x,
                 'y': y,
                 'angle': angle
-                #'visualization': visualization_path
             })
 
         # Write output CSV file with comma delimiter
@@ -57,16 +64,19 @@ def generate_results(input_csv, output_folder, delimeter= ';'):
         sys.exit(1)
 
 
-
-if __name__ == "__main__":
+def main():
     # Check if the correct number of arguments is provided
     if len(sys.argv) != 3:
         print("Usage: python3 solution/csvBuilder.py path/to/input/input.csv path/to/output/folder/")
         sys.exit(1)
-        
-input_csv_path = sys.argv[1] # (path/to/input/input.csv)
 
-output_folder_path = sys.argv[2] # (path/to/output/folder/)
+
+    input_csv_path = sys.argv[1]  # (path/to/input/input.csv)
+
+    output_folder_path = sys.argv[2]  # (path/to/output/folder/)
 
     # Run the solution
-generate_results(input_csv_path, output_folder_path)
+    generate_results(input_csv_path, output_folder_path)
+
+if __name__ == "__main__":
+    compute_solution("../data/dummy/part_1/part_1.png", "soultion.png")
