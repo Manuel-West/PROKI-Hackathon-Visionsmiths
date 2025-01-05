@@ -14,15 +14,13 @@ from argparse import ArgumentParser
 def compute_solution(part_input_path, gripper_input_path, output_path, show=False):
     part_mask, binary_image_invert, shape = part.process_image(part_input_path, output_path, show=False, inverted_binary=True)
     _, _, centerTuple, _ = part.find_center(part_mask)
-    combined_image = part.combine(part_mask, centerTuple, show)
 
     gripper_mask, cX, cY = gripper.preprocessing_gripper(gripper_input_path, shape[0], shape[1], show)
     assert part_mask.shape == gripper_mask.shape
     gripper_mask_torch = V(torch.tensor(gripper_mask).double(), True)
-    #part_mask_torch = V(torch.tensor(part_mask).double(), True)
 
+    # Create random mask to
     random_values = torch.rand_like(torch.tensor(part_mask).float()) * 0.8 + 0.2  # Scale to [0.2, 1.0]
-
     # Only apply random values where part_mask is non-zero
     new_part_mask = torch.where(torch.tensor(part_mask) > 0, random_values, torch.zeros_like(random_values))
 
@@ -99,5 +97,4 @@ def main():
     generate_results(input_csv_path, output_folder_path)
 
 if __name__ == "__main__":
-    #main()
-    compute_solution("../data/dummy/part_1/part_1.png", "../data/dummy/part_1/gripper_2.png","soultion.png",False)
+    main()

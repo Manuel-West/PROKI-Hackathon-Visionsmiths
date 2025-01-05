@@ -5,7 +5,7 @@ import os
 import sys
 
 
-def process_image(input_image_path, output_path, show: bool, inverted_binary: bool, otsu_margin=10):
+def process_image(input_image_path, output_path, show: bool, inverted_binary: bool, otsu_margin=10, save=False):
     """
     Processes an input image to create a binary representation by identifying 
     and masking sections using Canny edge detection, Otsu thresholding, and 
@@ -17,6 +17,7 @@ def process_image(input_image_path, output_path, show: bool, inverted_binary: bo
     - show (bool): Whether to display intermediate processing steps using Matplotlib.
     - inverted_binary (bool): Whether to generate and return an inverted binary image.
     - otsu_margin (int): Margin factor for computing thresholds for edge detection.
+    - save (bool): Whether to save the processed image or not.
 
     Returns:
     - binary_image (np.ndarray): The processed binary image.
@@ -98,8 +99,8 @@ def process_image(input_image_path, output_path, show: bool, inverted_binary: bo
         plt.show()
 
     # Save the final binary image
-    cv2.imwrite(output_path, binary_image)
-    #print(f"Binary image saved at {output_image_path}")
+    if save:
+        cv2.imwrite(output_path, binary_image)
     
     binary_inverted = None
     
