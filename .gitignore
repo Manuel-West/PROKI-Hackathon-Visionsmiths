@@ -2,9 +2,9 @@
 data/**
 !data/dummy/** */
 Rohdaten/*
-.vscode
-PROKI-Hackathon-Visionsmiths.code-workspace
-
+.vscode/*
+*.json
+*.code-workspace
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
