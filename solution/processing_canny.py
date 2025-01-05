@@ -32,7 +32,7 @@ def process_image(input_image_path, output_path, show: bool, inverted_binary: bo
     # Convert the image to grayscale for easier processing
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-    # apply some general smotting of picture to reduce noise
+    # apply some general smoothing of picture to reduce noise
     blurred_image = cv2.GaussianBlur(gray_image, (3, 3), 0)  # Lighter blur: 3x3 kernel
 
     # get OTSU thresholds (scalar) for canny
@@ -191,60 +191,6 @@ def combine(binary, center_tuple: tuple, show: bool):
 
     # Return the image with the center marked
     return binaryAndCenter_rgb
-
-
-
-
-'''
-def process_directory(directory_path):
-    """
-    Processes all subfolders in the base folder, creates binary images, finds centers,
-    and plots results in a grid using Matplotlib.
-
-    Parameters:
-    - directory_path (str): Path to the base folder containing part_x subfolders.
-    """
-    part_folders = sorted([f for f in os.listdir(directory_path) if f.startswith("part_")])
-    total_parts = len(part_folders)
-
-    parts_per_window = 10  # Number of parts per figure
-
-    # Process parts in chunks of 'parts_per_window'
-    for window_idx in range(0, total_parts, parts_per_window):
-        plt.figure(figsize=(15, 8))  # Create a new figure for each window
-        plt.suptitle(f"Parts {window_idx + 1} to {min(window_idx + parts_per_window, total_parts)}")
-
-        for idx, part_folder in enumerate(part_folders[window_idx:window_idx + parts_per_window]):
-            folder_path = os.path.join(directory_path, part_folder)
-            
-            # Locate the first .png image in the folder
-            part_image = next((f for f in os.listdir(folder_path) if f.endswith(".png")), None)
-            if part_image:
-                input_image_path = os.path.join(folder_path, part_image)
-
-                # Process the image
-                binary_image = process_image(input_image_path, show=False)
-
-                # Find the center
-                _, _, center_tuple, _ = find_center(binary_image)
-
-                # Combine the binary image with the center marker
-                binary_with_center = combine(binary_image, center_tuple, show=False)
-
-                # Plot the image
-                plt.subplot(2, 5, idx + 1)  # 2 rows x 5 columns = 10 subplots
-                plt.imshow(binary_with_center)
-                plt.title(part_folder)
-                plt.axis("off")
-            else:
-                print(f"No PNG image found in {folder_path}.")
-
-        plt.tight_layout()
-        plt.show()  # Show the current figure without blocking execution
-
-    print("All windows are displayed.")
-
-'''
 
 
 
