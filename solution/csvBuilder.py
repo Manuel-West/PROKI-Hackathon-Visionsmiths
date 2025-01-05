@@ -32,10 +32,6 @@ def generate_results(input_csv, output_folder, delimeter= ';'):
             y = random.randint(50, 500)
             angle = random.choice([0, 45, 90, 135, 180])
 
-            # Add visualization (optional)
-            #visualization_path = os.path.join(output_folder, f"vis_{part.split('.')[0]}_{gripper.split('.')[0]}.png")
-            #create_visualization(part, gripper, x, y, angle, visualization_path)
-
             # Add the result to output data
             output_data.append({
                 'part': part,
@@ -59,35 +55,6 @@ def generate_results(input_csv, output_folder, delimeter= ';'):
     except Exception as e:
         print(f"Error: {e}")
         sys.exit(1)
-
-
-
-'''
-def create_visualization(part, gripper, x, y, angle, output_path):
-    """
-    Generate a simple visualization of the part and gripper placement.
-
-    :param part: Name of the part file (for display purposes).
-    :param gripper: Name of the gripper file (for display purposes).
-    :param x: X-coordinate of the placement.
-    :param y: Y-coordinate of the placement.
-    :param angle: Rotation angle of the gripper.
-    :param output_path: Path to save the generated visualization image.
-    """
-    # Create a figure and axis using Matplotlib
-    fig, ax = plt.subplots()
-    ax.set_title(f"Part: {part}, Gripper: {gripper}")
-    ax.scatter(x, y, label=f"Position: ({x}, {y}), Angle: {angle}°", color='red')
-    ax.legend()
-    ax.set_xlim(0, 600)
-    ax.set_ylim(0, 600)
-    plt.grid(True)
-
-    # Save the visualization image to the specified path
-    plt.savefig(output_path)
-    plt.close()
-'''
-
 
 
 
