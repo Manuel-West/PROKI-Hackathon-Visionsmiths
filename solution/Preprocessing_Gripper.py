@@ -118,7 +118,7 @@ def expand_binary_image(image, target_width, target_height, show = False):
         print("Press any key to continue...")
         cv2.waitKey(0)
     return resized_image
-def preprocessing_gripper(image_path, show = False):
+def preprocessing_gripper(image_path, target_width, target_height, show = False):
     """
     Preprocess an image to find the center of mass of a gripper.
 
@@ -128,14 +128,16 @@ def preprocessing_gripper(image_path, show = False):
 
     Parameters:
     image_path (str): The file path to the image.
+    target_width (int) : The desired width of the output image.
+    target_height (int) : The desired height of the output image.
     show (bool, optional): If True, displays intermediate images. Default is False.
 
     Returns:
-    tuple: A tuple containing the x and y coordinates of the center of mass (cX, cY).
+    tuple: A tuple containing the image with x and y coordinates of the center of mass (cX, cY).
     """
     binary_image = get_binary_image(image_path )
     cX, cY = find_center(binary_image, show=show)
-    resized_binary_image = expand_binary_image(binary_image, binary_image.shape[1], binary_image.shape[0], show = show)
+    resized_binary_image = expand_binary_image(binary_image, target_width, target_height, show = show)
     return resized_binary_image, cX, cY
 
 if __name__ == '__main__':
