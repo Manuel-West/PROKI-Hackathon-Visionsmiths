@@ -6,13 +6,21 @@ import matplotlib.pyplot as plt
 import Preprocessing_Gripper as gripper
 import processing_canny as part
 import optimization as opt
+import torch as torch
+from torch.autograd import Variable as V
 
-def compute_solution(inputPath, outputPath):
-    binary_image, binary_image_invert, shape = part.process_image(inputPath, outputPath, show=False, inverted_binary=False)
-    _, _, centerTuple, _ = part.find_center(binary_image)
-    combined_image = part.combine(binary_image, centerTuple, show=True)
-    print("Shape of the image (x,y):", shape)
+def compute_solution(part_input_path, gripper_input_path, output_path, show=False):
+    part_mask, binary_image_invert, shape = part.process_image(part_input_path, output_path, show=False, inverted_binary=True)
+    _, _, centerTuple, _ = part.find_center(part_mask)
+    combined_image = part.combine(part_mask, centerTuple, show)
 
+    gripper_mask, cX, cY = gripper.preprocessing_gripper(gripper_input_path, shape[0], shape[1], show)
+    assert part_mask.shape == gripper_mask.shape
+    gripper_mask_torch = V(torch.tensor(gripper_mask).double(), True)
+    part_mask_torch = V(torch.tensor(part_mask).double(), True)
+    options={}
+    x, x_hist = opt.optimize_coordinates(template=gripper_mask_torch, reference=part_mask_torch, target_coords=centerTuple, options=options, max_iter=100, tol=1e-10)
+    print(x)
     #return solution
 
 def generate_results(input_csv, output_folder, delimeter= ';'):
@@ -79,4 +87,4 @@ def main():
     generate_results(input_csv_path, output_folder_path)
 
 if __name__ == "__main__":
-    compute_solution("../data/dummy/part_1/part_1.png", "soultion.png")
+    compute_solution("../data/dummy/part_1/part_1.png", "../data/dummy/part_1/gripper_2.png","soultion.png")

@@ -105,9 +105,15 @@ def expand_binary_image(image, target_width, target_height, show = False):
         return resized_image
     # Resize the image
     top = int((target_height - height) / 2)
-    bottom = top
-    left = int((target_width * 2 - width) / 2)
-    right = left
+    if target_height % 2 == 0:
+        bottom = top
+    else:
+        bottom = top + 1
+    left = int((target_width - width) / 2)
+    if target_width % 2 == 0:
+        right = left
+    else:
+        right = left + 1
     resized_image = cv2.copyMakeBorder(image, top, bottom, left, right, cv2.BORDER_CONSTANT)
     if show:
         width = resized_image.shape[1]
@@ -136,8 +142,8 @@ def preprocessing_gripper(image_path, target_width, target_height, show = False)
     tuple: A tuple containing the image with x and y coordinates of the center of mass (cX, cY).
     """
     binary_image = get_binary_image(image_path )
-    cX, cY = find_center(binary_image, show=show)
-    resized_binary_image = expand_binary_image(binary_image, target_width, target_height, show = show)
+    resized_binary_image = expand_binary_image(binary_image, target_width, target_height, show=show)
+    cX, cY = find_center(resized_binary_image, show=show)
     return resized_binary_image, cX, cY
 
 if __name__ == '__main__':
