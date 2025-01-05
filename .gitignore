@@ -171,3 +171,10 @@ cython_debug/
 
 # MacOS
 .DS_Store
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/PROKI-Hackathon-Visionsmiths.iml
+.idea/vcs.xml
+/solution/playground.py
