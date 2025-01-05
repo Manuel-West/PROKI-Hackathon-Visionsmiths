@@ -1,6 +1,10 @@
 # Custom, data should not be made public!
 data/**
 !data/dummy/** */
+Rohdaten/*
+.vscode/*
+*.json
+*.code-workspace
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
