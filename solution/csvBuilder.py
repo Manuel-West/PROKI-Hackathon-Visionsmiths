@@ -8,6 +8,8 @@ import processing_canny as part
 import optimization as opt
 import torch as torch
 from torch.autograd import Variable as V
+from pathlib import Path
+from argparse import ArgumentParser
 
 def compute_solution(part_input_path, gripper_input_path, output_path, show=False):
     part_mask, binary_image_invert, shape = part.process_image(part_input_path, output_path, show=False, inverted_binary=True)
@@ -81,18 +83,21 @@ def generate_results(input_csv, output_folder, delimeter= ';'):
 
 
 def main():
-    # Check if the correct number of arguments is provided
-    if len(sys.argv) != 3:
-        print("Usage: python3 solution/csvBuilder.py path/to/input/input.csv path/to/output/folder/")
-        sys.exit(1)
+    parser = ArgumentParser(prog="csvBuilder",
+    description="Creates a csv file containing the results in form part,gripper,x,y,angle for a given csv file in form part,gripper ")
+    parser.add_argument("input", help="input csv file")
+    parser.add_argument("output", help="output csv file")
+    args = parser.parse_args()
+    input_csv_path = args.input
+    output_folder_path= args.output
 
+    if not os.path.exists(input_csv_path):
+        raise FileNotFoundError(f"File not found: {input_csv_path}")
 
-    input_csv_path = sys.argv[1]  # (path/to/input/input.csv)
-
-    output_folder_path = sys.argv[2]  # (path/to/output/folder/)
 
     # Run the solution
     generate_results(input_csv_path, output_folder_path)
 
 if __name__ == "__main__":
+    #main()
     compute_solution("../data/dummy/part_1/part_1.png", "../data/dummy/part_1/gripper_2.png","soultion.png",False)
