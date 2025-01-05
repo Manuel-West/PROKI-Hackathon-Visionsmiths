@@ -4,6 +4,7 @@ import numpy as np
 from torch.autograd import Variable as V
 from typing import Tuple, Union, Optional, List
 from scipy.optimize import minimize
+from PIL import Image
 
 class AffineImageTransformer:
     """
@@ -186,7 +187,8 @@ def optimize_coordinates(template: torch.Tensor,
                          reference: torch.Tensor,
                          target_coords: Tuple[float, float],
                          max_iter: int = 100,
-                         tol: float = 1e-10) -> Tuple[np.ndarray, List[np.ndarray]]:
+                         tol: float = 1e-10,
+                         show: bool = False) -> Tuple[np.ndarray, List[np.ndarray]]:
     """
     Optimize the transformation parameters using scipy.optimize.minimize with SLSQP method.
     """
@@ -216,4 +218,64 @@ def optimize_coordinates(template: torch.Tensor,
         }
     )
 
+    if show:
+        result_image = apply_solution_overlay(
+            template=template,
+            reference=reference,
+            solution_vector=result.x,
+            output_path="visualization.png"  # Optional
+        )
     return result.x, result.x_hist if hasattr(result, 'x_hist') else [result.x]
+
+
+def apply_solution_overlay(template: torch.Tensor,
+                           reference: torch.Tensor,
+                           solution_vector: np.ndarray,
+                           output_path: str = None) -> np.ndarray:
+    """
+    Applies the solution vector to the template and creates a visualization
+    where the transformed template is shown in red over the reference image.
+
+    Args:
+        template: Template image tensor
+        reference: Reference image tensor
+        solution_vector: Solution vector [angle, tx, ty] from optimization
+        output_path: Optional path to save the visualization. If None, only returns the array
+
+    Returns:
+        numpy array of RGB image with red overlay (height, width, 3)
+    """
+    # Get image dimensions from reference
+    height, width = reference.shape
+    center = [width // 2, height // 2]
+
+    # Convert solution vector to appropriate types
+    angle = torch.tensor(float(solution_vector[0]), dtype=torch.float32)
+    translate = [float(solution_vector[1]), float(solution_vector[2])]
+
+    # Apply transformation to template
+    matrix = AffineImageTransformer.get_affine_matrix(
+        center=center,
+        angle=angle,
+        translate=translate
+    )
+    transformed_template = AffineImageTransformer.affine_transform(template, matrix)
+
+    # Create RGB visualization
+    rgb_image = np.zeros((height, width, 3), dtype=np.uint8)
+
+    # Set reference as grayscale background
+    reference_np = reference.detach().cpu().numpy()
+    rgb_image[..., 0] = reference_np * 255
+    rgb_image[..., 1] = reference_np * 255
+    rgb_image[..., 2] = reference_np * 255
+
+    # Add red overlay for transformed template
+    transformed_np = transformed_template.detach().cpu().numpy()
+    rgb_image[transformed_np > 0.5] = [255, 0, 0]  # Red color for template
+
+    # Save if output path is provided
+    if output_path:
+        Image.fromarray(rgb_image).save(output_path)
+
+    return rgb_image

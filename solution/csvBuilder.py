@@ -27,7 +27,7 @@ def compute_solution(part_input_path, gripper_input_path, output_path, show=Fals
     # Convert to double and make it require gradients
     part_mask_torch = torch.tensor(new_part_mask, dtype=torch.float64, requires_grad=True)
 
-    x, x_hist = opt.optimize_coordinates(template=gripper_mask_torch, reference=part_mask_torch, target_coords=centerTuple, max_iter=100, tol=1e-1)
+    x, x_hist = opt.optimize_coordinates(template=gripper_mask_torch, reference=part_mask_torch, target_coords=centerTuple, max_iter=100, tol=1e-1, show=True)
     print(x)
     #return solution
 
