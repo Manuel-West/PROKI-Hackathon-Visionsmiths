@@ -32,7 +32,7 @@ def process_image(input_image_path, output_path, show: bool, inverted_binary: bo
     _, sam_image, _ = SAM.segment_and_get_part_mask(input_image_path)
    
     # Convert the image to grayscale for easier processing
-    #sam_image = cv2.cvtColor(sam_image, cv2.COLOR_BGR2GRAY) 
+    #sam_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
     # apply some general smoothing of picture to reduce noise
     blurred_image = cv2.GaussianBlur(sam_image, (5, 5), 0)  # Lighter blur: 3x3 kernel

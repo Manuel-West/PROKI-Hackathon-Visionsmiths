@@ -12,7 +12,7 @@ from pathlib import Path
 from argparse import ArgumentParser
 
 def compute_solution(part_input_path, gripper_input_path, output_path, show=False) -> tuple:
-    part_mask, binary_image_invert, shape = part.process_image(part_input_path, output_path, show=True, inverted_binary=True)
+    part_mask, binary_image_invert, shape = part.process_image(part_input_path, output_path, show=True, inverted_binary=True, save=True)
     _, _, centerTuple, _ = part.find_center(part_mask)
 
     gripper_mask, cX, cY = gripper.preprocessing_gripper(gripper_input_path, shape[0], shape[1], show)
@@ -104,7 +104,7 @@ def main():
 
 
     # Run the solution
-    generate_results(input_csv_path, output_folder_path, delimiter=',')
+    generate_results(input_csv_path, output_folder_path, delimiter=';')
 
 if __name__ == "__main__":
     main()
