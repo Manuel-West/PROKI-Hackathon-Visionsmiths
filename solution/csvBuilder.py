@@ -11,8 +11,8 @@ from torch.autograd import Variable as V
 from pathlib import Path
 from argparse import ArgumentParser
 
-def compute_solution(part_input_path, gripper_input_path, output_path, show=False):
-    part_mask, binary_image_invert, shape = part.process_image(part_input_path, output_path, show=False, inverted_binary=True)
+def compute_solution(part_input_path, gripper_input_path, output_path, show=False) -> tuple:
+    part_mask, binary_image_invert, shape = part.process_image(part_input_path, output_path, show=True, inverted_binary=True)
     _, _, centerTuple, _ = part.find_center(part_mask)
 
     gripper_mask, cX, cY = gripper.preprocessing_gripper(gripper_input_path, shape[0], shape[1], show)
@@ -27,47 +27,56 @@ def compute_solution(part_input_path, gripper_input_path, output_path, show=Fals
     # Convert to double and make it require gradients
     part_mask_torch = torch.tensor(new_part_mask, dtype=torch.float64, requires_grad=True)
 
-    x, x_hist = opt.optimize_coordinates(template=gripper_mask_torch, reference=part_mask_torch, target_coords=centerTuple, max_iter=100, tol=1e-1, show=True)
-    print(x)
-    #return solution
+    x, x_hist = opt.optimize_coordinates(template=gripper_mask_torch, reference=part_mask_torch, target_coords=centerTuple, max_iter=100, tol=1e-1, show=False)
+    solution = ()
+    solution_x = centerTuple[0] + x[0]
+    solution_y = centerTuple[1] + x[1]
+    solution_alpha = x[2]
+    solution = (solution_x, solution_y, solution_alpha)
 
-def generate_results(input_csv, output_folder, delimeter= ';'):
+    return solution
+
+def generate_results(input_csv, output_filename, delimiter= ';'):
     """
     Main function to generate results based on an input semicolon-delimited CSV file.
 
     :param input_csv: Path to the input CSV file containing 'part' and 'gripper' columns.
     :param output_folder: Path to the folder where results (CSV and visualizations) will be saved.
-    :param: delimeter: default delimeter is ' ; ' -> use delimeter= ',' if other  
+    :param: delimiter: default delimiter is ' ; ' -> use delimiter= ',' if other
     """
     try:
         # Read the input CSV file with (default) semicolon delimiter
         with open(input_csv, 'r') as file:
-            reader = csv.DictReader(file, delimiter= delimeter)  # Specify semicolon delimiter
+            reader = csv.DictReader(file, delimiter= delimiter)  # Specify semicolon delimiter
             rows = list(reader)
 
-        # Ensure the output folder exists
-        os.makedirs(output_folder, exist_ok=True)
+        # Ensure the output directory exists
+        output_dir = os.path.dirname(output_filename)
+        if output_dir:  # Only create directory if output_filename includes a path
+            os.makedirs(output_dir, exist_ok=True)
 
         # Prepare output data
         output_data = []
         for row in rows:
-            part = row['part']
-            gripper = row['gripper']
+            part_path = row['part']
+            gripper_path = row['gripper']
 
-
+            # call the compute_solution
+            output_folder = os.path.dirname(os.path.abspath(__file__)) + '\solution.png'
+            print(output_folder)
+            solution = compute_solution(part_path, gripper_path, output_folder, show=False)
 
             # Add the result to output data
             output_data.append({
-                'part': part,
-                'gripper': gripper,
-                'x': x,
-                'y': y,
-                'angle': angle
+                'part': part_path,
+                'gripper': gripper_path,
+                'x': solution[0],
+                'y': solution[1],
+                'angle': solution[2]
             })
 
         # Write output CSV file with comma delimiter
-        output_csv = os.path.join(output_folder, "solutions.csv")
-        with open(output_csv, 'w', newline='') as file:
+        with open(output_filename, 'w', newline='') as file:
             writer = csv.DictWriter(file, fieldnames=['part', 'gripper', 'x', 'y', 'angle'])
             writer.writeheader()
             writer.writerows(output_data)
@@ -94,7 +103,7 @@ def main():
 
 
     # Run the solution
-    generate_results(input_csv_path, output_folder_path)
+    generate_results(input_csv_path, output_folder_path, delimiter=',')
 
 if __name__ == "__main__":
     main()

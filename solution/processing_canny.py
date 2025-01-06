@@ -33,7 +33,7 @@ def process_image(input_image_path, output_path, show: bool, inverted_binary: bo
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
     # apply some general smoothing of picture to reduce noise
-    blurred_image = cv2.GaussianBlur(gray_image, (3, 3), 0)  # Lighter blur: 3x3 kernel
+    blurred_image = cv2.GaussianBlur(gray_image, (5, 5), 0)  # Lighter blur: 3x3 kernel
 
     # get OTSU thresholds (scalar) for canny
     otsu_thresh, _ = cv2.threshold(blurred_image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
