@@ -170,6 +170,11 @@ class OptimizationFunctions:
         output.backward()
         grad = params_torch.grad.numpy()
 
+        epsilon = 1e-6
+        norm = np.linalg.norm(grad)
+        if np.isclose(norm, 0):
+            grad += epsilon  # Add a small value to make it non-zero
+
         return output.item(), grad
 
     def constraint(self, params: np.ndarray) -> float:
@@ -190,7 +195,30 @@ def optimize_coordinates(template: torch.Tensor,
                          show: bool = False,
                          output_path: Optional[str] = None) -> Tuple[np.ndarray, List[np.ndarray]]:
     """
-    Optimize the transformation parameters using scipy.optimize.minimize with SLSQP method.
+    Optimizes the coordinates of a target point to align the `template` tensor with the `reference` tensor.
+
+    Parameters:
+    -----------
+    template : torch.Tensor
+        The template tensor to be aligned. Typically represents an image or spatial data.
+    reference : torch.Tensor
+        The reference tensor to which the template is aligned.
+    target_coords : Tuple[float, float]
+        Initial coordinates of the target point, provided as a tuple (x, y).
+    max_iter : int, optional, default=100
+        The maximum number of iterations for the optimization process.
+    tol : float, optional, default=1e-10
+        The tolerance for convergence. The optimization stops if the change in coordinates is below this threshold.
+    show : bool, optional, default=False
+        If True, visualizes the optimization process, such as intermediate alignment steps.
+    output_path : Optional[str], optional
+        If provided, saves visualization outputs or results to the specified path.
+
+    Returns:
+    --------
+    Tuple[np.ndarray, List[np.ndarray]]
+        - Optimized coordinates as a NumPy array.
+        - A list of intermediate coordinate states throughout the optimization process.
     """
     opt_funcs = OptimizationFunctions(template, reference, target_coords)
 
