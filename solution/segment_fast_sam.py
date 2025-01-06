@@ -317,4 +317,51 @@ def segment_and_get_part_mask(
         max_threshold=max_threshold
     )
 
+    part_mask = part_mask.astype(np.uint8) * 255
+    background_mask = background_mask.astype(np.uint8) * 255
+
     return results, part_mask, background_mask
+
+
+
+
+
+def main():
+   
+    # Example usage
+    segmenter = ImageSegmenter()
+
+    # Define image path
+    image_path = "../Rohdaten/part_2/part_2.png"
+
+    # Segment image
+    original_image, results = segmenter.segment_image(
+        image_path,
+        device="cpu",
+        conf=0.25,
+        iou=0.9
+    )
+
+    # Visualize all segments
+    segmenter.visualize_all_segments(
+        original_image,
+        results
+    )
+
+    # Visualize background with size thresholds
+    segmenter.visualize_background(
+        original_image,
+        results,
+        min_threshold=0.001,  # Only use segments between 2% and 10% of image size
+        max_threshold=0.05
+    )
+
+    # After calculating the background
+    part_mask, background_mask = segmenter.calculate_background(original_image, results)
+
+    # Visualize the results
+    segmenter.visualize_segmented_part(original_image, part_mask, background_mask, save_path=None)
+
+
+if __name__ == "__main__":
+    main()

@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 import sys
-
+import segment_fast_sam as SAM
 
 def process_image(input_image_path, output_path, show: bool, inverted_binary: bool, otsu_margin=10, save=False):
     """
@@ -25,15 +25,17 @@ def process_image(input_image_path, output_path, show: bool, inverted_binary: bo
     """
     
     # Load the input image
-    image = cv2.imread(input_image_path)
+    image = cv2.imread(input_image_path)#
     if image is None:
         raise FileNotFoundError(f"Could not load the image at {input_image_path}")
     
+    _, sam_image, _ = SAM.segment_and_get_part_mask(input_image_path, min_threshold=0, max_threshold=0.1, conf=0.025)
+   
     # Convert the image to grayscale for easier processing
-    gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    #sam_image = cv2.cvtColor(SAM_image, cv2.COLOR_BGR2GRAY) 
 
     # apply some general smoothing of picture to reduce noise
-    blurred_image = cv2.GaussianBlur(gray_image, (5, 5), 0)  # Lighter blur: 3x3 kernel
+    blurred_image = cv2.GaussianBlur(sam_image, (5, 5), 0)  # Lighter blur: 3x3 kernel
 
     # get OTSU thresholds (scalar) for canny
     otsu_thresh, _ = cv2.threshold(blurred_image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
@@ -57,7 +59,7 @@ def process_image(input_image_path, output_path, show: bool, inverted_binary: bo
     _ = cv2.drawContours(mask, contours, -1, (255), thickness=cv2.FILLED)
 
     # Copy the grayscale image and set the masked regions to black
-    result_image = gray_image.copy()
+    result_image = sam_image.copy()
     result_image[mask == 255] = 0  # Set the masked areas to black
 
     # Apply Otsu's thresholding to convert the image to binary
@@ -72,27 +74,33 @@ def process_image(input_image_path, output_path, show: bool, inverted_binary: bo
         plt.figure(figsize=(10, 5))
 
         # Original image
-        plt.subplot(1, 4, 1)
+        plt.subplot(1, 5, 1)
         plt.imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
         plt.title('Original Image')
         plt.axis('off')
 
         # Canny edges
-        plt.subplot(1, 4, 2)
+        plt.subplot(1, 5, 2)
         plt.imshow(edges, cmap='gray')
         plt.title('Canny Edges')
         plt.axis('off')
 
         # Zones identified by Canny
-        plt.subplot(1, 4, 3)
+        plt.subplot(1, 5, 3)
         plt.imshow(result_image, cmap='gray')
         plt.title('Canny Zones')
         plt.axis('off')
 
         # Final binary image
-        plt.subplot(1, 4, 4)
+        plt.subplot(1, 5, 4)
         plt.imshow(binary_image, cmap='gray')
         plt.title('Binary Image')
+        plt.axis('off')
+        
+        # SAM
+        plt.subplot(1, 5, 5)
+        plt.imshow(sam_image, cmap='gray')
+        plt.title('SAM')
         plt.axis('off')
 
         plt.tight_layout()
@@ -204,7 +212,7 @@ if __name__ == "__main__":
     inputPath = sys.argv[1]
     outputPath = sys.argv[2]
 
-    binary_image, binary_image_invert, shape = process_image(inputPath, outputPath, show= False, inverted_binary= False)
+    binary_image, binary_image_invert, shape = process_image(inputPath, outputPath, show= True, inverted_binary= False)
     
     _, _, centerTuple, _ = find_center(binary_image)
     combined_image = combine(binary_image, centerTuple, show= True)
