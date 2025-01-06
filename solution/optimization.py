@@ -182,7 +182,6 @@ class OptimizationFunctions:
         _, grad = self._compute_constraint_with_grad(params)
         return grad
 
-
 def optimize_coordinates(template: torch.Tensor,
                          reference: torch.Tensor,
                          target_coords: Tuple[float, float],
@@ -204,6 +203,17 @@ def optimize_coordinates(template: torch.Tensor,
         'fun': opt_funcs.constraint,
         'jac': opt_funcs.constraint_gradient
     }
+    # Calculate bounds for optimization
+    half_width = reference.shape[1] / 2
+    half_height = reference.shape[0] / 2
+
+    # bounds for [angle, tx, ty]
+    # angle can be unbounded (-inf, inf), tx and ty are bounded by image dimensions
+    bounds = [
+        (-np.inf, np.inf),  # angle: no bounds
+        (-half_width, half_width),  # tx: bounded by half width
+        (-half_height, half_height)  # ty: bounded by half height
+    ]
 
     # Run optimization
     result = minimize(
@@ -211,6 +221,7 @@ def optimize_coordinates(template: torch.Tensor,
         x0=x0,
         method='SLSQP',
         jac=opt_funcs.objective_gradient,
+        bounds=bounds,
         constraints=[constraint],
         options={
             'maxiter': max_iter,
@@ -267,9 +278,9 @@ def apply_solution_overlay(template: torch.Tensor,
 
     # Set reference as grayscale background
     reference_np = reference.detach().cpu().numpy()
-    rgb_image[..., 0] = reference_np * 255
-    rgb_image[..., 1] = reference_np * 255
-    rgb_image[..., 2] = reference_np * 255
+    rgb_image[..., 0] = 255-reference_np
+    rgb_image[..., 1] = (1-reference_np) * 255
+    rgb_image[..., 2] = (1-reference_np) * 255
 
     # Add red overlay for transformed template
     transformed_np = transformed_template.detach().cpu().numpy()
