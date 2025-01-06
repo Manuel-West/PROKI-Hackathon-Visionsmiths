@@ -29,7 +29,7 @@ def process_image(input_image_path, output_path, show: bool, inverted_binary: bo
     if image is None:
         raise FileNotFoundError(f"Could not load the image at {input_image_path}")
     
-    _, sam_image, _ = SAM.segment_and_get_part_mask(input_image_path, min_threshold=0, max_threshold=0.1, conf=0.025)
+    _, sam_image, _ = SAM.segment_and_get_part_mask(input_image_path)
    
     # Convert the image to grayscale for easier processing
     #sam_image = cv2.cvtColor(sam_image, cv2.COLOR_BGR2GRAY) 

@@ -16,7 +16,7 @@ def compute_solution(part_input_path, gripper_input_path, output_path, show=Fals
     _, _, centerTuple, _ = part.find_center(part_mask)
 
     gripper_mask, cX, cY = gripper.preprocessing_gripper(gripper_input_path, shape[0], shape[1], show)
-    assert part_mask.shape == gripper_mask.shape
+    assert part_mask.shape == gripper_mask.shape, f"Mask shapes must match: part_mask {part_mask.shape} != gripper_mask {gripper_mask.shape}"
     gripper_mask_torch = V(torch.tensor(gripper_mask).double(), True)
 
     # Create random mask to
@@ -27,7 +27,8 @@ def compute_solution(part_input_path, gripper_input_path, output_path, show=Fals
     # Convert to double and make it require gradients
     part_mask_torch = torch.tensor(new_part_mask, dtype=torch.float64, requires_grad=True)
 
-    x, x_hist = opt.optimize_coordinates(template=gripper_mask_torch, reference=part_mask_torch, target_coords=centerTuple, max_iter=100, tol=1e-1, show=False)
+    x, x_hist = opt.optimize_coordinates(template=gripper_mask_torch, reference=part_mask_torch, target_coords=centerTuple, max_iter=100, tol=1e-8, show=True, output_path=output_path)
+    print(x)
     solution = ()
     solution_x = centerTuple[0] + x[0]
     solution_y = centerTuple[1] + x[1]
@@ -62,7 +63,7 @@ def generate_results(input_csv, output_filename, delimiter= ';'):
             gripper_path = row['gripper']
 
             # call the compute_solution
-            output_folder = os.path.dirname(os.path.abspath(__file__)) + '\solution.png'
+            output_folder = os.path.dirname(os.path.abspath(__file__)) + "\solution_" + os.path.basename(part_path)
             print(output_folder)
             solution = compute_solution(part_path, gripper_path, output_folder, show=False)
 

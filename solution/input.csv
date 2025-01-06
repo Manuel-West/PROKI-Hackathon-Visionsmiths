@@ -1,3 +1,7 @@
 part;gripper
 ../data/dummy/part_1/part_1.png;../data/dummy/part_1/gripper_2.png
 ../data/dummy/part_2/part_2.png;../data/dummy/part_2/gripper_1.png
+../data/Validierungsdaten/1/part_1.png;../data/Validierungsdaten/1/gripper_2.png
+../data/Validierungsdaten/2/part_2.png;../data/Validierungsdaten/2/gripper_1.png
+../data/Validierungsdaten/3/part_3.png;../data/Validierungsdaten/6/gripper_4.png
+../data/Validierungsdaten/4/part_4.png;../data/Validierungsdaten/4/gripper_5.png

@@ -188,7 +188,8 @@ def optimize_coordinates(template: torch.Tensor,
                          target_coords: Tuple[float, float],
                          max_iter: int = 100,
                          tol: float = 1e-10,
-                         show: bool = False) -> Tuple[np.ndarray, List[np.ndarray]]:
+                         show: bool = False,
+                         output_path: Optional[str] = None) -> Tuple[np.ndarray, List[np.ndarray]]:
     """
     Optimize the transformation parameters using scipy.optimize.minimize with SLSQP method.
     """
@@ -223,7 +224,7 @@ def optimize_coordinates(template: torch.Tensor,
             template=template,
             reference=reference,
             solution_vector=result.x,
-            output_path="visualization.png"  # Optional
+            output_path=output_path  # Optional
         )
     return result.x, result.x_hist if hasattr(result, 'x_hist') else [result.x]
 
