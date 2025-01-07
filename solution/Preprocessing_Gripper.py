@@ -105,12 +105,12 @@ def expand_binary_image(image, target_width, target_height, show = False):
         return resized_image
     # Resize the image
     top = int((target_height - height) / 2)
-    if target_height % 2 == 0:
+    if 2*top + height == target_height:
         bottom = top
     else:
         bottom = top + 1
     left = int((target_width - width) / 2)
-    if target_width % 2 == 0:
+    if 2*left + width == target_width:
         right = left
     else:
         right = left + 1
