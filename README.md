@@ -23,7 +23,7 @@ The challenge was presented during the kick-off meeting. In short, the task is t
   </tr>
   <tr>
     <td><strong><a href="https://github.com/meretgoetzmann" target="_blank">Meret Götzmann</a></strong></td>
-    <td><img src="https://avatars.githubusercontent.com/u/meretgoetzmann?s=100" width="80" height="80" /></td>
+    <td><img src="https://avatars.githubusercontent.com/u/94292981?v=4" width="80" height="80" /></td>
   </tr>
 </table>
 
