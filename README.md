@@ -1,4 +1,4 @@
-# Hackathon 2024 - Submission of Group Visionsmiths
+# PROKI Hackathon 2024 - Submission of Group Visionsmiths
 
 ## The Challenge
 The challenge was presented during the kick-off meeting. In short, the task is to find a good position and rotation for a robotic arm to grab a piece of cut sheet metal.
@@ -14,7 +14,7 @@ The challenge was presented during the kick-off meeting. In short, the task is t
 ## Documentation
 
 ### 1.Strategy
-<img src="Strategy.png" alt="An example solution"/>
+<img src="doc/Strategy.png" alt="An example solution"/>
 
 
 ### 2. Preprocessing Part-Image
@@ -67,7 +67,7 @@ The script outputs optimized transformation parameters and optionally generates 
 
 
 # How to Run
-- **! IMPORTANT !**   Navigate to the `solution dierctory` ../solution/
+- **! IMPORTANT !**   Navigate to the `solution directory` ../solution/
 
 - Run this code in bash:
 
@@ -85,27 +85,26 @@ The script outputs optimized transformation parameters and optionally generates 
 
     `generate_results(input_csv_path, output_folder_path, delimiter=',')`
 
-- The code will open the respective ammount of windows as parts specified in the input.csv, close them to get the output
+- The the data will be saved in the `output.csv` and there will be generated visulatizations in the solution directory.
 
-- After closing the windows the data will be saved in the `output.csv` and there will be generated visulatizations in the solution directory.
-
-- The terminal will also print your specific output_path like: 
+- The terminal will also print your specific `output_path` like: 
 
     `Output folder:  'path_to_your' /PROKI-Hackathon-Visionsmiths solution/solution_part_2.png`
 
 
 
 
-## Exapmle Solutions 
+## Example Solutions 
 
-<img src="solution/solution_part_1.png" alt="An example input image" width="200px" /> 
-<img src="solution/solution_part_2.png" alt="An example solution" width="200px" />
+<img src="data/dummy/part_1/part_1.png" alt="An example input image" width="200px" /> 
+
+
+<img src="doc/solution_part_1.png" alt="An example input image" width="200px" /> 
 
 ## License
 
 All resources in this repository are licensed under the MIT License. See the [LICENSE](LICENSE) for more information.
 
-We expect you to also license your code under the MIT License when submitting it.
 
 ## Acknowledgments
 
