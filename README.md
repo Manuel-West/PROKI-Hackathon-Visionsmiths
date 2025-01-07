@@ -11,9 +11,24 @@ The challenge was presented during the kick-off meeting. In short, the task is t
 - [Meret Götzmann](https://github.com/meretgoetzmann)
 
 
+# Team Members
+
+| Name               | Profile                                    |
+|--------------------|--------------------------------------------------|
+| **Jonas Kyrion**    | ![Jonas Kyrion](https://avatars.githubusercontent.com/u/EnKJneer?s=100) |
+| **Jonas Ludwig**    | ![Jonas Ludwig](https://avatars.githubusercontent.com/u/joeFPV99?s=100) |
+| **Manuel Westermann**| ![Manuel Westermann](https://avatars.githubusercontent.com/u/Manuel-West?s=100) |
+| **Meret Götzmann**  | ![Meret Götzmann](https://avatars.githubusercontent.com/u/meretgoetzmann?s=100) |
+
+# Team Banner
+
+![Team Banner]("doc/visonsmiths.png")
+
+
+
 ## Documentation
 
-### 1.Strategy
+### 1. Brain storming strategy
 <img src="doc/Strategy.png" alt="An example solution"/>
 
 
@@ -23,7 +38,7 @@ The sheet metal part will be fed into a preprocess pipeline containing the follw
 
     1. pre-segementation using the ultalytic fast-sam.
 
-[More info here](https://github.com/ultralytics/ultralytics/blob/main/docs/en/models/fast-sam.md)
+[More info to fast-sam here](https://github.com/ultralytics/ultralytics/blob/main/docs/en/models/fast-sam.md)
 
     2. Gaussian blur. 
 
@@ -67,7 +82,9 @@ The script outputs optimized transformation parameters and optionally generates 
 
 
 # How to Run
-- **! IMPORTANT !**   Navigate to the `solution directory` ../solution/
+- **! IMPORTANT !**   
+
+    Navigate to the `solution directory` ../solution/
 
 - Run this code in bash:
 
