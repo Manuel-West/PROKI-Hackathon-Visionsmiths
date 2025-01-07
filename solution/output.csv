@@ -1,0 +1,3 @@
+part,gripper,x,y,angle
+../data/dummy/part_1/part_1.png,../data/dummy/part_1/gripper_2.png,123.00005226063836,171.00000874364542,3.009192216557694
+../data/dummy/part_2/part_2.png,../data/dummy/part_2/gripper_1.png,108.97727236877006,76.84527676053321,-6.474967711721111

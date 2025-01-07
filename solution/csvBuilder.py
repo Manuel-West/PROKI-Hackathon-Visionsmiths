@@ -63,9 +63,10 @@ def generate_results(input_csv, output_filename, delimiter= ';'):
             gripper_path = row['gripper']
 
             # call the compute_solution
-            output_folder = os.path.dirname(os.path.abspath(__file__)) + "\solution_" + os.path.basename(part_path)
-            print(output_folder)
+            output_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), "solution_" + os.path.basename(part_path))
+            print("Output folder:", output_folder)
             solution = compute_solution(part_path, gripper_path, output_folder, show=False)
+
 
             # Add the result to output data
             output_data.append({

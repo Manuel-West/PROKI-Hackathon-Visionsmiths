@@ -1,17 +1,19 @@
 # Hackathon 2024 - Submission of Group Visionsmiths
 
-Team members:
-    - Meret Götzmann
+**Team members:**
+
+`Meret Götzmann
     - Jonas Kyrion
     - Jonas Ludwig
-    - Manuel Westermann
+    - Manuel Westermann`
 
-## Description
-The task is to find a good position and rotation for a robotic arm to grab a piece of cut sheet metal.
-<img src="data/dummy/part_1/part_1.png" alt="An example input image" width="200px" /> 
-<img src="data/dummy/part_1/visualisation_1.png" alt="An example solution" width="200px" />
+## Documentation
 
-### Preprocessing Part-Image & Gripper 
+### 1.Strategy
+<img src="Strategy.png" alt="An example solution"/>
+
+
+### 2. Preprocessing Part-Image
 
 The sheet metal part will be fed into a preprocess pipeline containing the follwoing steps:
 
@@ -25,9 +27,9 @@ The sheet metal part will be fed into a preprocess pipeline containing the follw
     
     4. morphological operations to close edegs and remove noise from the image 
 
-Afterwards find the shape & the image center via the open-CV `moments` method. This will be used to apped the processed gripper to the right dimensions.
+    5. Afterwards find the shape & the image center via the open-CV moments method. This will be used to apped the processed gripper to the right dimensions.
 
-### Preprocessing Gripper Images
+### 3. Preprocessing Gripper Images
 This script processes gripper images through a pipeline to prepare them for further analysis. The pipeline includes the following steps:
 
     1. Binary Image Conversion: Convert the input image to grayscale and apply Otsu's method for thresholding to obtain a binary image.
@@ -40,7 +42,7 @@ This script processes gripper images through a pipeline to prepare them for furt
 
 This processed output ensures the gripper images are standardized for further applications.
 
-### Optimization 
+### 4. Optimization 
 
 This script optimizes the alignment of a template image with a reference image by adjusting affine transformation parameters. The optimization process includes the following steps:
 
@@ -56,24 +58,40 @@ This script optimizes the alignment of a template image with a reference image b
 
 The script outputs optimized transformation parameters and optionally generates visualization files, ensuring accurate and efficient alignment of template images for further analysis.
 
-## How to Run
-- Navigate to the solution dierctory ../solution/
+# How to Run
+- **! IMPORTANT !**   Navigate to the `solution dierctory` ../solution/
 
-- Run the code in bash:
-    ->  `python csvBuilder.py input.csv output.csv`
+- Run this code in bash:
 
-- An example input.csv could look like this and the default delimiter is ';'
+    `python csvBuilder.py input.csv output.csv`
 
+- An example input.csv could look like this and the default delimiter is ';' . 
+    
+    
     ```csv
     part;gripper
     ../data/dummy/part_1/part_1.png;../data/dummy/part_1/gripper_2.png
     ../data/dummy/part_2/part_2.png;../data/dummy/part_2/gripper_1.png
-    ../data/Validierungsdaten/1/part_1.png;../data/Validierungsdaten/1/gripper_2.png
-    ../data/Validierungsdaten/2/part_2.png;../data/Validierungsdaten/2/gripper_1.png
-    ../data/Validierungsdaten/3/part_3.png;../data/Validierungsdaten/6/gripper_4.png
-    ../data/Validierungsdaten/4/part_4.png;../data/Validierungsdaten/4/gripper_5.png
-    ../data/Validierungsdaten/5/part_5.png;../data/Validierungsdaten/5/gripper_3.png
 
+- If you used ',' it must be specified in:
+
+    `generate_results(input_csv_path, output_folder_path, delimiter=',')`
+
+- The code will open the respective ammount of windows as parts specified in the input.csv, close them to get the output
+
+- After closing the windows the data will be saved in the `output.csv` and there will be generated visulatizations in the solution directory.
+
+- The terminal will also print your specific output_path like: 
+
+    `Output folder:  'path_to_your' /PROKI-Hackathon-Visionsmiths solution/solution_part_2.png`
+
+
+
+
+## Exapmle Solutions 
+
+<img src="solution/solution_part_1.png" alt="An example input image" width="200px" /> 
+<img src="solution/solution_part_2.png" alt="An example solution" width="200px" />
 
 ## License
 
