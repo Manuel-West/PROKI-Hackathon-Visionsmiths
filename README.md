@@ -7,13 +7,25 @@ The challenge was presented during the kick-off meeting. In short, the task is t
 
 # Team Members
 
-| Name               | Profile                                    |                                                                                     |
-|--------------------|--------------------------------------------|-------------------------------------------------------------------------------------|
-| **Jonas Kyrion**    | <img src="https://avatars.githubusercontent.com/u/169038609?v=4" width="80" height="80" /> |    
-| **Jonas Ludwig**    | <img src="https://avatars.githubusercontent.com/u/31520121?v=4" width="80" height="80" /> |
-| **Manuel Westermann**| <img src="https://avatars.githubusercontent.com/u/103488120?v=4" width="80" height="80" /> |
-| **Meret Götzmann**  | <img src="https://avatars.githubusercontent.com/u/meretgoetzmann?s=100" width="80" height="80" /> |
-
+<table border="1" cellpadding="10" cellspacing="0">
+  <tr>
+    <td><strong>Jonas Kyrion</strong></td>
+    <td><img src="https://avatars.githubusercontent.com/u/169038609?v=4" width="80" height="80" /></td>
+    <td rowspan="4"><img src="doc/visionsmiths.png" width="200" /></td>
+  </tr>
+  <tr>
+    <td><strong>Jonas Ludwig</strong></td>
+    <td><img src="https://avatars.githubusercontent.com/u/31520121?v=4" width="80" height="80" /></td>
+  </tr>
+  <tr>
+    <td><strong>Manuel Westermann</strong></td>
+    <td><img src="https://avatars.githubusercontent.com/u/103488120?v=4" width="80" height="80" /></td>
+  </tr>
+  <tr>
+    <td><strong>Meret Götzmann</strong></td>
+    <td><img src="https://avatars.githubusercontent.com/u/meretgoetzmann?s=100" width="80" height="80" /></td>
+  </tr>
+</table>
 
 
 
