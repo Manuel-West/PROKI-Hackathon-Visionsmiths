@@ -9,20 +9,20 @@ The challenge was presented during the kick-off meeting. In short, the task is t
 
 <table border="1" cellpadding="10" cellspacing="0">
   <tr>
-    <td><strong>Jonas Kyrion</strong></td>
+    <td><strong><a href="https://github.com/EnKJneer" target="_blank">Jonas Kyrion</a></strong></td>
     <td><img src="https://avatars.githubusercontent.com/u/169038609?v=4" width="80" height="80" /></td>
     <td rowspan="4"><img src="doc/visionsmiths.png" width="200" /></td>
   </tr>
   <tr>
-    <td><strong>Jonas Ludwig</strong></td>
+    <td><strong><a href="https://github.com/joeFPV99" target="_blank">Jonas Ludwig</a></strong></td>
     <td><img src="https://avatars.githubusercontent.com/u/31520121?v=4" width="80" height="80" /></td>
   </tr>
   <tr>
-    <td><strong>Manuel Westermann</strong></td>
+    <td><strong><a href="https://github.com/Manuel-West" target="_blank">Manuel Westermann</a></strong></td>
     <td><img src="https://avatars.githubusercontent.com/u/103488120?v=4" width="80" height="80" /></td>
   </tr>
   <tr>
-    <td><strong>Meret Götzmann</strong></td>
+    <td><strong><a href="https://github.com/meretgoetzmann" target="_blank">Meret Götzmann</a></strong></td>
     <td><img src="https://avatars.githubusercontent.com/u/meretgoetzmann?s=100" width="80" height="80" /></td>
   </tr>
 </table>
