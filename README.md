@@ -96,7 +96,7 @@ The script outputs optimized transformation parameters and optionally generates 
 
 ## Example Solutions 
 
-<img src="data/dummy/part_1/part_1.png" width="200px" /> 
+<img src="doc/part_1.png" width="200px" /> 
 
 
 <img src="doc/solution_part_1.png" width="200px" /> 
