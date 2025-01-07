@@ -142,8 +142,8 @@ def preprocessing_gripper(image_path, target_width, target_height, show = False)
     tuple: A tuple containing the image with x and y coordinates of the center of mass (cX, cY).
     """
     binary_image = get_binary_image(image_path )
-    resized_binary_image = expand_binary_image(binary_image, target_width, target_height, show=show)
-    cX, cY = find_center(resized_binary_image, show=show)
+    cX, cY = find_center(binary_image, show=show)
+    resized_binary_image = expand_binary_image(binary_image, target_width, target_height, show = show)
     return resized_binary_image, cX, cY
 
 if __name__ == '__main__':
