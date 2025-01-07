@@ -10,6 +10,7 @@ import torch as torch
 from torch.autograd import Variable as V
 from pathlib import Path
 from argparse import ArgumentParser
+import math
 
 
 def compute_solution(part_input_path, gripper_input_path, output_path, show=False) -> tuple:
@@ -44,11 +45,10 @@ def compute_solution(part_input_path, gripper_input_path, output_path, show=Fals
 
     # Use optimization to align the gripper mask with the part mask
     x, x_hist = opt.optimize_coordinates(template=gripper_mask_torch, reference=part_mask_torch, target_coords=centerTuple, max_iter=100, tol=1e-8, show=True, output_path=output_path)
-
-    # Compute the solution coordinates and angle based on the optimization results
     print(x)
-    solution_x = centerTuple[0] + x[0]
-    solution_y = centerTuple[1] + x[1]
+    # Compute the solution coordinates and angle based on the optimization results
+    solution_x = x[0]
+    solution_y = x[1]
     solution_alpha = x[2]
     solution = (solution_x, solution_y, solution_alpha)
 
@@ -89,9 +89,9 @@ def generate_results(input_csv, output_filename, delimiter=';'):
             output_data.append({
                 'part': part_path,
                 'gripper': gripper_path,
-                'x': solution[0],
-                'y': solution[1],
-                'angle': solution[2]
+                'x': math.ceil(solution[0]) if solution[0] % 1 >= 0.5 else math.floor(solution[0]),
+                'y': math.ceil(solution[1]) if solution[1] % 1 >= 0.5 else math.floor(solution[1]),
+                'angle': (solution[2] % 360 + 360) % 360
             })
 
         # Write the results to the output CSV file
