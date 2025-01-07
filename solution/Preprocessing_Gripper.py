@@ -105,9 +105,15 @@ def expand_binary_image(image, target_width, target_height, show = False):
         return resized_image
     # Resize the image
     top = int((target_height - height) / 2)
-    bottom = top
-    left = int((target_width * 2 - width) / 2)
-    right = left
+    if 2*top + height == target_height:
+        bottom = top
+    else:
+        bottom = top + 1
+    left = int((target_width - width) / 2)
+    if 2*left + width == target_width:
+        right = left
+    else:
+        right = left + 1
     resized_image = cv2.copyMakeBorder(image, top, bottom, left, right, cv2.BORDER_CONSTANT)
     if show:
         width = resized_image.shape[1]
