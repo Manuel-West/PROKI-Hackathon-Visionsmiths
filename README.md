@@ -7,7 +7,6 @@ Team members:
     - Manuel Westermann
 
 ## Description
-// A very brief description of your solution, e.g., five sentences //
 The task is to find a good position and rotation for a robotic arm to grab a piece of cut sheet metal.
 <img src="data/dummy/part_1/part_1.png" alt="An example input image" width="200px" /> 
 <img src="data/dummy/part_1/visualisation_1.png" alt="An example solution" width="200px" />
@@ -28,11 +27,34 @@ The sheet metal part will be fed into a preprocess pipeline containing the follw
 
 Afterwards find the shape & the image center via the open-CV `moments` method. This will be used to apped the processed gripper to the right dimensions.
 
+### Preprocessing Gripper Images
+This script processes gripper images through a pipeline to prepare them for further analysis. The pipeline includes the following steps:
 
+    1. Binary Image Conversion: Convert the input image to grayscale and apply Otsu's method for thresholding to obtain a binary image.
+
+    2. Center of Mass Calculation: Use OpenCV's moments method to compute the center of mass of the binary image.
+
+    3. Dynamic Resizing: Expand the binary image symmetrically to match target dimensions by adding borders.
+
+    4. Optional Visualization: Display intermediate images and dimensions for debugging purposes.
+
+This processed output ensures the gripper images are standardized for further applications.
 
 ### Optimization 
 
-TODO
+This script optimizes the alignment of a template image with a reference image by adjusting affine transformation parameters. The optimization process includes the following steps:
+
+    1. Objective Function Definition: Define an objective function that minimizes the error between the transformed template's center and the target coordinates.
+
+    2. Constraint Handling: Implement a constraint function to maximize the overlap between the transformed template and the reference image.
+
+    3. Affine Transformation Application: Use PyTorch to apply affine transformations, including rotation and translation, to the template image during optimization.
+
+    4. Gradient-Based Optimization: Utilize the scipy.optimize.minimize method with gradient-based constraints and bounds to find the optimal transformation parameters.
+
+    5. Optional Visualization: Provide optional visualization of intermediate and final alignment results, including overlays of the template and reference images.
+
+The script outputs optimized transformation parameters and optionally generates visualization files, ensuring accurate and efficient alignment of template images for further analysis.
 
 ## How to Run
 - Navigate to the solution dierctory ../solution/
@@ -51,10 +73,6 @@ TODO
     ../data/Validierungsdaten/3/part_3.png;../data/Validierungsdaten/6/gripper_4.png
     ../data/Validierungsdaten/4/part_4.png;../data/Validierungsdaten/4/gripper_5.png
     ../data/Validierungsdaten/5/part_5.png;../data/Validierungsdaten/5/gripper_3.png
-
-
-## ... and other things you want to tell us
-
 
 
 ## License
