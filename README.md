@@ -14,11 +14,25 @@ The task is to find a good position and rotation for a robotic arm to grab a pie
 
 ### Preprocessing Part-Image & Gripper 
 
-TODO
+The sheet metal part will be fed into a preprocess pipeline containing the follwoing steps:
+
+    1. pre-segementation using the ultalytic fast-sam
+
+    [More info here](https://github.com/ultralytics/ultralytics/blob/main/docs/en/models/fast-sam.md)
+
+    2. Gaussian blur 
+
+    3. Determine dynymic thresholds for a canny detector via otsu's method
+    
+    4. morphological operations to close edegs and remove noise from the image 
+
+Afterwards find the shape & the image center via the open-CV `moments` method. This will be used to apped the processed gripper to the right dimensions.
+
 
 
 ### Optimization 
 
+TODO
 
 ## How to Run
 - Navigate to the solution dierctory ../solution/
@@ -26,7 +40,7 @@ TODO
 - Run the code in bash:
     ->  `python csvBuilder.py input.csv output.csv`
 
-- The input.csv must look like this and the default delimiter is ';'
+- An example input.csv could look like this and the default delimiter is ';'
 
     ```csv
     part;gripper
