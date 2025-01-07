@@ -3,26 +3,17 @@
 ## The Challenge
 The challenge was presented during the kick-off meeting. In short, the task is to find a good position and rotation for a robotic arm to grab a piece of cut sheet metal.
 
-**Team members:**
-
-- [Jonas Kyrion](https://github.com/EnKJneer)
-- [Jonas Ludwig](https://github.com/joeFPV99)
-- [Manuel Westermann](https://github.com/Manuel-West)
-- [Meret Götzmann](https://github.com/meretgoetzmann)
 
 
 # Team Members
 
-| Name               | Profile                                    |
-|--------------------|--------------------------------------------------|
-| **Jonas Kyrion**    | ![Jonas Kyrion](https://avatars.githubusercontent.com/u/EnKJneer?s=100) |
-| **Jonas Ludwig**    | ![Jonas Ludwig](https://avatars.githubusercontent.com/u/joeFPV99?s=100) |
-| **Manuel Westermann**| ![Manuel Westermann](https://avatars.githubusercontent.com/u/Manuel-West?s=100) |
-| **Meret Götzmann**  | ![Meret Götzmann](https://avatars.githubusercontent.com/u/meretgoetzmann?s=100) |
+| Name               | Profile                                    |                                                                                     |
+|--------------------|--------------------------------------------|-------------------------------------------------------------------------------------|
+| **Jonas Kyrion**    | <img src="https://avatars.githubusercontent.com/u/169038609?v=4" width="80" height="80" /> |    
+| **Jonas Ludwig**    | <img src="https://avatars.githubusercontent.com/u/31520121?v=4" width="80" height="80" /> |
+| **Manuel Westermann**| <img src="https://avatars.githubusercontent.com/u/103488120?v=4" width="80" height="80" /> |
+| **Meret Götzmann**  | <img src="https://avatars.githubusercontent.com/u/meretgoetzmann?s=100" width="80" height="80" /> |
 
-# Team Banner
-
-![Team Banner]("doc/visonsmiths.png")
 
 
 
