@@ -1,11 +1,15 @@
 # Hackathon 2024 - Submission of Group Visionsmiths
 
+## The Challenge
+The challenge was presented during the kick-off meeting. In short, the task is to find a good position and rotation for a robotic arm to grab a piece of cut sheet metal.
+
 **Team members:**
 
-`Meret Götzmann
-    - Jonas Kyrion
-    - Jonas Ludwig
-    - Manuel Westermann`
+- [Jonas Kyrion](https://github.com/EnKJneer)
+- [Jonas Ludwig](https://github.com/joeFPV99)
+- [Manuel Westermann](https://github.com/Manuel-West)
+- [Meret Götzmann](https://github.com/meretgoetzmann)
+
 
 ## Documentation
 
@@ -17,17 +21,18 @@
 
 The sheet metal part will be fed into a preprocess pipeline containing the follwoing steps:
 
-    1. pre-segementation using the ultalytic fast-sam
+    1. pre-segementation using the ultalytic fast-sam.
 
-    [More info here](https://github.com/ultralytics/ultralytics/blob/main/docs/en/models/fast-sam.md)
+[More info here](https://github.com/ultralytics/ultralytics/blob/main/docs/en/models/fast-sam.md)
 
-    2. Gaussian blur 
+    2. Gaussian blur. 
 
-    3. Determine dynymic thresholds for a canny detector via otsu's method
-    
-    4. morphological operations to close edegs and remove noise from the image 
+    3. Determine dynymic thresholds for a canny detector via otsu's method.
+
+    4. morphological operations to close edegs and remove noise from the image.
 
     5. Afterwards find the shape & the image center via the open-CV moments method. This will be used to apped the processed gripper to the right dimensions.
+
 
 ### 3. Preprocessing Gripper Images
 This script processes gripper images through a pipeline to prepare them for further analysis. The pipeline includes the following steps:
@@ -42,13 +47,14 @@ This script processes gripper images through a pipeline to prepare them for furt
 
 This processed output ensures the gripper images are standardized for further applications.
 
+
 ### 4. Optimization 
 
 This script optimizes the alignment of a template image with a reference image by adjusting affine transformation parameters. The optimization process includes the following steps:
 
     1. Objective Function Definition: Define an objective function that minimizes the error between the transformed template's center and the target coordinates.
 
-    2. Constraint Handling: Implement a constraint function to maximize the overlap between the transformed template and the reference image.
+    2. Constraint Handling: Implement a constraint function such that the gripper will avoid the boundaries of the sheet metal part. 
 
     3. Affine Transformation Application: Use PyTorch to apply affine transformations, including rotation and translation, to the template image during optimization.
 
@@ -57,6 +63,8 @@ This script optimizes the alignment of a template image with a reference image b
     5. Optional Visualization: Provide optional visualization of intermediate and final alignment results, including overlays of the template and reference images.
 
 The script outputs optimized transformation parameters and optionally generates visualization files, ensuring accurate and efficient alignment of template images for further analysis.
+
+
 
 # How to Run
 - **! IMPORTANT !**   Navigate to the `solution dierctory` ../solution/
