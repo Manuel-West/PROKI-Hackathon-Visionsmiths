@@ -39,7 +39,7 @@ The challenge was presented during the kick-off meeting. In short, the task is t
 
 The sheet metal part will be fed into a preprocess pipeline containing the follwoing steps:
 
-    1. pre-segementation using the ultalytic fast-sam.
+    1. pre-segementation using ultalytic fast-sam.
 
 [More info to fast-sam here](https://github.com/ultralytics/ultralytics/blob/main/docs/en/models/fast-sam.md)
 
@@ -109,7 +109,7 @@ The script outputs optimized transformation parameters and optionally generates 
 
 - The terminal will also print your specific `output_path` like: 
 
-    `Output folder:  'path_to_your' /PROKI-Hackathon-Visionsmiths solution/solution_part_2.png`
+    `Output folder:  'path_to_your' /PROKI-Hackathon-Visionsmiths/solution/solution_part_2.png`
 
 
 
