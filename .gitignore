@@ -178,3 +178,4 @@ cython_debug/
 .idea/PROKI-Hackathon-Visionsmiths.iml
 .idea/vcs.xml
 /solution/playground.py
+solution/input_1.csv

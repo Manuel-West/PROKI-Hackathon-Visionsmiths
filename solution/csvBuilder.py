@@ -2,6 +2,8 @@ import sys
 import os
 import csv
 import random
+
+import cv2
 import matplotlib.pyplot as plt
 import Preprocessing_Gripper as gripper
 import processing_canny as part
@@ -25,10 +27,16 @@ def compute_solution(part_input_path, gripper_input_path, output_path, show=Fals
     """
     # Process the part image to get its mask, shape, and center
     part_mask, binary_image_invert, shape = part.process_image(part_input_path, output_path, show=False, inverted_binary=True, save=True)
+
+    # add padding to the borders
+    padding = 50
+    part_mask = cv2.copyMakeBorder(part_mask, padding, padding, padding, padding, cv2.BORDER_CONSTANT, None, value = 255)
+
+    # calculate center
     _, _, centerTuple, _ = part.find_center(part_mask)
 
     # Preprocess the gripper image and ensure it matches the shape of the part
-    gripper_mask, cX, cY = gripper.preprocessing_gripper(gripper_input_path, shape[0], shape[1], show)
+    gripper_mask, cX, cY = gripper.preprocessing_gripper(gripper_input_path, part_mask.shape[1], part_mask.shape[0], show)
 
     # Ensure the dimensions of part_mask and gripper_mask are the same
     assert part_mask.shape == gripper_mask.shape, f"Mask shapes must match: part_mask {part_mask.shape} != gripper_mask {gripper_mask.shape}"
