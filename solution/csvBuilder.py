@@ -89,7 +89,15 @@ def generate_results(input_csv, output_filename, delimiter=';'):
             gripper_path = row['gripper']  # Path to the gripper image
 
             # Compute the solution for the given part and gripper
-            output_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), "solution_" + os.path.basename(part_path))
+            part_name = os.path.splitext(os.path.basename(part_path))[0]
+            gripper_name = os.path.splitext(os.path.basename(gripper_path))[0]
+
+            # Construct output folder and ensure a single .png extension
+            output_folder = os.path.join(
+                os.path.dirname(os.path.abspath(__file__)), 
+                f"solution_{part_name}_{gripper_name}.png"
+            )
+            
             print("Output folder:", output_folder)
             solution = compute_solution(part_path, gripper_path, output_folder, show=False)
 

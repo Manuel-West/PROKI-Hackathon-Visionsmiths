@@ -109,7 +109,7 @@ The script outputs optimized transformation parameters and optionally generates 
 
 - The terminal will also print your specific `output_path` like: 
 
-    `Output folder:  'path_to_your' /PROKI-Hackathon-Visionsmiths/solution/solution_part_2.png`
+    `Output folder:  'path_to_your' /PROKI-Hackathon-Visionsmiths/solution/solution_{part_name}_{gripper_name}.png`
 
 
 
