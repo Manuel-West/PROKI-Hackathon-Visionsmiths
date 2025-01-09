@@ -143,7 +143,7 @@ def main():
         raise FileNotFoundError(f"File not found: {input_csv_path}")
 
     # Generate results based on the input and output paths
-    generate_results(input_csv_path, output_folder_path, delimiter=';')
+    generate_results(input_csv_path, output_folder_path, delimiter=',')
 
 
 if __name__ == "__main__":
