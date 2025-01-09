@@ -31,7 +31,7 @@ The challenge was presented during the kick-off meeting. In short, the task is t
 
 ## **Documentation**
 
-### 1. Brain storming strategy
+### 1. Brainstorming strategy
 <img src="doc/Strategy.png" alt="An example solution"/>
 
 ***
@@ -103,7 +103,7 @@ The script outputs optimized transformation parameters and optionally generates 
 
 - Run this code in bash:
 
-    `python csvBuilder.py task.csv output.csv`
+    `python csvBuilder.py input.csv output.csv`
 
 - An example input.csv could look like this and the default delimiter is ';' . 
     
@@ -113,9 +113,9 @@ The script outputs optimized transformation parameters and optionally generates 
     ../data/dummy/part_1/part_1.png;../data/dummy/part_1/gripper_2.png
     ../data/dummy/part_2/part_2.png;../data/dummy/part_2/gripper_1.png
 
-- If you used ';' it must be specified in:
+- If you used ',' it must be specified in:
 
-    `generate_results(input_csv_path, output_folder_path, delimiter=';')`
+    `generate_results(input_csv_path, output_folder_path, delimiter=',')`
 
 - The the data will be saved in the `output.csv` and there will be generated visulatizations in the solution directory.
 
@@ -139,7 +139,7 @@ The script outputs optimized transformation parameters and optionally generates 
 
 
 
- (The first time running it, there script will download pre-trained weights as `FastSAM-s.pt` file.)
+ (The first time running it, the script will eventually download pre-trained weights as `FastSAM-s.pt` file.)
 
 
 
