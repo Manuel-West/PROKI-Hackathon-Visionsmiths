@@ -131,13 +131,16 @@ class ImageSegmenter:
 
     def calculate_background(self, original_image, results, min_threshold=0.001, max_threshold=0.1):
         """
-        Calculate background mask.
+        Calculate background mask and process the image.
 
         Args:
             original_image (np.array): Original input image
             results: Segmentation results from FastSAM
             min_threshold (float): Minimum size threshold as a fraction of image size (0.0 to 1.0)
             max_threshold (float): Maximum size threshold as a fraction of image size (0.0 to 1.0)
+
+        Returns:
+            np.array: Processed and binarized image as numpy array
         """
         masks = results.masks.data.cpu().numpy()
 
@@ -164,9 +167,19 @@ class ImageSegmenter:
             else:
                 too_large_masks.append(mask)
 
-        # Invert the combined mask to get the background
-        part_mask = ~combined_mask
-        return part_mask, combined_mask
+        # Create a copy of the original image as numpy array
+        processed_image = original_image.copy()
+
+        # Set pixels to zero where the combined mask is True
+        processed_image[combined_mask] = 0
+
+        # Binarize the resulting image
+        if len(processed_image.shape) > 2:
+            processed_image = cv2.cvtColor(processed_image, cv2.COLOR_BGR2GRAY)
+
+        binary_output = (processed_image > 0).astype(np.uint8)
+
+        return binary_output, ~binary_output
 
     def visualize_segmented_part(self, original_image, part_mask, combined_mask, save_path=None):
         """
@@ -332,7 +345,7 @@ def main():
     segmenter = ImageSegmenter()
 
     # Define image path
-    image_path = "../Rohdaten/part_2/part_2.png"
+    image_path = "../data/dummy/part_2/part_3.png"
 
     # Segment image
     original_image, results = segmenter.segment_image(

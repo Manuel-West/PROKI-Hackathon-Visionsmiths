@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # Use the official Python image
-FROM python:3.12
+FROM python:3.11
 
 # Install OpenCV and its dependencies
 RUN apt-get update && apt-get -yq install python3-opencv
