@@ -1,4 +1,4 @@
-# PROKI Hackathon 2024 - Submission of Group Visionsmiths
+# **PROKI Hackathon 2024 - Submission of Group Visionsmiths**
 
 ## The Challenge
 The challenge was presented during the kick-off meeting. In short, the task is to find a good position and rotation for a robotic arm to grab a piece of cut sheet metal.
@@ -27,9 +27,9 @@ The challenge was presented during the kick-off meeting. In short, the task is t
   </tr>
 </table>
 
+---
 
-
-## Documentation
+## **Documentation**
 
 ### 1. Brain storming strategy
 <img src="doc/Strategy.png" alt="An example solution"/>
@@ -133,9 +133,9 @@ The script outputs optimized transformation parameters and optionally generates 
 
   `python3 eval.py --command "python3 ../solution/csvBuilder.py" --debug` (UNIX) 
 
-  `pytho3 eval.py --command "python ../solution/csvBuilder.py" --debug` (WINDOWS)
+  `python eval.py --command "python ../solution/csvBuilder.py" --debug` (WINDOWS)
 
-  you can run the evaluation script. 
+  you can run the evaluation script from the evaluate directory. 
 
 
 
