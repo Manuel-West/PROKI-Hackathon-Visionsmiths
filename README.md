@@ -34,6 +34,7 @@ The challenge was presented during the kick-off meeting. In short, the task is t
 ### 1. Brain storming strategy
 <img src="doc/Strategy.png" alt="An example solution"/>
 
+***
 
 ### 2. Preprocessing Part-Image
 
@@ -51,6 +52,15 @@ The sheet metal part will be fed into a preprocess pipeline containing the follw
 
     5. Afterwards find the shape & the image center via the open-CV moments method. This will be used to apped the processed gripper to the right dimensions.
 
+**! Optional !** 
+If yout want a visualization of the different pipeline-steps set `show= True"` in 
+
+`part.process_image( _ , _ , show= True, _ , _ )`
+
+
+
+*** 
+
 
 ### 3. Preprocessing Gripper Images
 This script processes gripper images through a pipeline to prepare them for further analysis. The pipeline includes the following steps:
@@ -64,6 +74,8 @@ This script processes gripper images through a pipeline to prepare them for furt
     4. Optional Visualization: Display intermediate images and dimensions for debugging purposes.
 
 This processed output ensures the gripper images are standardized for further applications.
+
+***
 
 
 ### 4. Optimization 
@@ -82,16 +94,16 @@ This script optimizes the alignment of a template image with a reference image b
 
 The script outputs optimized transformation parameters and optionally generates visualization files, ensuring accurate and efficient alignment of template images for further analysis.
 
+---
 
-
-# How to Run
+# -> How to Run csvBuilder.py
 - **! IMPORTANT !**   
 
     Navigate to the `solution directory` ../solution/
 
 - Run this code in bash:
 
-    `python csvBuilder.py input.csv output.csv`
+    `python csvBuilder.py task.csv output.csv`
 
 - An example input.csv could look like this and the default delimiter is ';' . 
     
@@ -101,9 +113,9 @@ The script outputs optimized transformation parameters and optionally generates 
     ../data/dummy/part_1/part_1.png;../data/dummy/part_1/gripper_2.png
     ../data/dummy/part_2/part_2.png;../data/dummy/part_2/gripper_1.png
 
-- If you used ',' it must be specified in:
+- If you used ';' it must be specified in:
 
-    `generate_results(input_csv_path, output_folder_path, delimiter=',')`
+    `generate_results(input_csv_path, output_folder_path, delimiter=';')`
 
 - The the data will be saved in the `output.csv` and there will be generated visulatizations in the solution directory.
 
@@ -111,6 +123,23 @@ The script outputs optimized transformation parameters and optionally generates 
 
     `Output folder:  'path_to_your' /PROKI-Hackathon-Visionsmiths/solution/solution_{part_name}_{gripper_name}.png`
 
+---
+
+# -> How to Run eval.py
+
+- As our our main script is `csvBuilder.py` we have modified the path to **default= "python solution/csvBuilder.py"**.
+
+- With 
+
+  `python3 eval.py --command "python3 ../solution/csvBuilder.py" --debug` (UNIX) 
+
+  `pytho3 eval.py --command "python ../solution/csvBuilder.py" --debug` (WINDOWS)
+
+  you can run the evaluation script. 
+
+
+
+ (The first time running it, there script will download pre-trained weights as `FastSAM-s.pt` file.)
 
 
 
